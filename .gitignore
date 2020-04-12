@@ -1,5 +1,5 @@
 .idea
-/logs
+/logs/*
 /data
 .env
 /.project
@@ -16,5 +16,6 @@
 /.devcontainer/*
 !/.devcontainer/devcontainer.example.json
 !/.devcontainer/docker-compose.extend-example.yml
+!.gitkeep
 
 .DS_Store

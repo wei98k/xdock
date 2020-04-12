@@ -1,0 +1,2 @@
+2020/04/12 13:01:34 [emerg] 6#6: host not found in upstream "php" in /etc/nginx/sites-available/www.majianwei.com.conf:25
+2020/04/12 13:04:38 [emerg] 6#6: a duplicate default server for 0.0.0.0:80 in /etc/nginx/sites-available/www.majianwei.com.conf:3

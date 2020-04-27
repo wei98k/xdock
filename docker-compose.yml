@@ -1557,3 +1557,46 @@ services:
         - ${DATA_PATH_HOST}/tomcat/logs:/usr/local/tomcat/logs
       # restart: always
 
+### cadvisor ####################################################
+    cadvisor:
+      container_name: cadvisor
+      build:
+        context: ./cadvisor
+      ports:
+        - "8080:8080"
+      links:
+        - influxdb:influxsrv
+      command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxsrv:8086 -storage_driver_user=admin -storage_driver_password=admin
+      privileged: true
+      volumes:
+        - /:/rootfs:ro
+        - /sys:/sys:ro
+        - /var/run:/var/run:rw
+        - /var/lib/docker/:/var/lib/docker:ro
+### influxdb ####################################################
+    influxdb:
+      container_name: influxdb
+      build:
+        context: ./influxdb
+      environment:
+        - PRE_CREATE_DB=cadvisor
+      ports:
+        - "8083:8083"
+        - "8086:8086"
+      expose:
+        - "8090"
+        - "8099"
+      volumes:
+        - ./influxdb/conf:/etc/influxdb
+        - ${DATA_PATH_HOST}/influxdb/data:/var/lib/influxdb/data
+        - ${DATA_PATH_HOST}/influxdb/meta:/var/lib/influxdb/meta
+        - ${DATA_PATH_HOST}/influxdb/wal:/var/lib/influxdb/wal
+### chronograf  ####################################################
+    chronograf:
+      container_name: chronograf
+      build:
+        context: ./chronograf
+      ports:
+        - "8888:8888"
+      volumes:
+        - ${DATA_PATH_HOST}/chronograf:/var/lib/chronograf

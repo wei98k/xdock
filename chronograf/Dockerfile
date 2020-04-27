@@ -1,0 +1,1 @@
+FROM chronograf:1.8.0

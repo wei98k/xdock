@@ -1,0 +1,53 @@
+
+FROM laradock/php-fpm:2.7-7.2
+
+LABEL maintainer="mjw <majianwei168@outlook.com>"
+
+# 设置环境变量
+ENV DEBIAN_FRONTEND noninteractive
+
+# 替换中国镜像
+RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/mirrors.tuna.tsinghua.edu.cn/' /etc/apt/sources.list && \
+    sed -i 's/security-cdn.debian.org/mirrors.tuna.tsinghua.edu.cn/' /etc/apt/sources.list
+
+# always run apt update when start and after add new source list, then clean up at end.
+RUN set -xe; \
+    apt-get update -yqq && \
+    pecl channel-update pecl.php.net && \
+    apt-get install -yqq \
+      apt-utils \
+      libzip-dev zip unzip && docker-php-ext-configure zip --with-libzip;  \
+      # Install the zip extension
+      docker-php-ext-install zip && \
+      php -m | grep -q 'zip'
+
+###########################################################################
+# BZ2:
+###########################################################################
+
+RUN apt-get -y install libbz2-dev; \
+  docker-php-ext-install bz2
+
+###########################################################################
+# GMP (GNU Multiple Precision):
+###########################################################################
+
+RUN apt-get install -y libgmp-dev && \
+    if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
+      ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
+    ;fi && \
+    docker-php-ext-install gmp
+
+USER root
+
+# Clean up
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    rm /var/log/lastlog /var/log/faillog
+RUN echo 'majianwei'
+# Configure non-root user.
+ARG PUID=1000
+ENV PUID ${PUID}
+ARG PGID=1000
+ENV PGID ${PGID}

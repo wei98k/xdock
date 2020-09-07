@@ -197,6 +197,29 @@ COPY ./crontab /etc/cron.d
 RUN chmod -R 644 /etc/cron.d
 
 ###########################################################################
+# 2020年9月7日10:24:29
+# rdkafka:
+###########################################################################
+
+ARG INSTALL_RDKAFKA=true
+
+RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
+    curl -L -o /tmp/librdkafka.tar.gz "https://github.com/edenhill/librdkafka/archive/v1.5.0.tar.gz"; \
+    mkdir -p librdkafka \
+    && tar -C librdkafka -zxvf /tmp/librdkafka.tar.gz --strip 1 \
+    && ( \
+        cd librdkafka \
+        && ./configure \
+        && make \
+        && make install \
+    ) \
+    && rm -r librdkafka \
+    && rm /tmp/librdkafka.tar.gz \
+    && pecl install rdkafka-4.0.3 \
+    && echo "extension=rdkafka.so" > /usr/local/etc/php/conf.d/rdkafka.ini \
+;fi
+
+###########################################################################
 # Drush:
 ###########################################################################
 
@@ -653,6 +676,8 @@ ENV NPM_REGISTRY ${NPM_REGISTRY}
 ENV NVM_DIR /home/laradock/.nvm
 ARG NVM_NODEJS_ORG_MIRROR
 ENV NVM_NODEJS_ORG_MIRROR ${NVM_NODEJS_ORG_MIRROR}
+
+
 
 RUN if [ ${INSTALL_NODE} = true ]; then \
     # Install nvm (A Node Version Manager)

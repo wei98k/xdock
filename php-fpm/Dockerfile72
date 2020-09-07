@@ -921,7 +921,7 @@ RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
     git clone https://github.com/edenhill/librdkafka.git && \
       cd librdkafka && ./configure && make && make install && \
     pecl install rdkafka:4.0.3 && \
-    echo "extension=rdkafka.so" > /usr/local/etc/php/conf.d/rdkafka.ini
+    echo "extension=rdkafka.so" > /usr/local/etc/php/conf.d/rdkafka.ini \
 ;fi
 
 ###########################################################################

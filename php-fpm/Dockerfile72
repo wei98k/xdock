@@ -89,7 +89,7 @@ RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
     ) \
     && rm -r librdkafka \
     && rm /tmp/librdkafka.tar.gz \
-    && pecl install rdkafka:4.0.3 \
+    && pecl install rdkafka-4.0.3 \
     && echo "extension=rdkafka.so" > /usr/local/etc/php/conf.d/rdkafka.ini \
 ;fi
 

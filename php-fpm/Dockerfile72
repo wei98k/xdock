@@ -79,7 +79,7 @@ ARG INSTALL_RDKAFKA=true
 
 RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
     curl -L -o /tmp/librdkafka.tar.gz "https://github.com/edenhill/librdkafka/archive/v1.5.0.tar.gz"; \
-    && mkdir -p librdkafka \
+    mkdir -p librdkafka \
     && tar -C librdkafka -zxvf /tmp/librdkafka.tar.gz --strip 1 \
     && ( \
         cd librdkafka \

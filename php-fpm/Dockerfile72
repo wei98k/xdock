@@ -71,6 +71,29 @@ RUN set -xe; \
 #
 
 ###########################################################################
+# 2020年9月7日10:24:29
+# rdkafka:
+###########################################################################
+
+ARG INSTALL_RDKAFKA=true
+
+RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
+    curl -L -o /tmp/librdkafka.tar.gz "https://github.com/edenhill/librdkafka/archive/v1.5.0.tar.gz"; \
+    && mkdir -p librdkafka \
+    && tar -C librdkafka -zxvf /tmp/librdkafka.tar.gz --strip 1 \
+    && ( \
+        cd librdkafka \
+        && ./configure \
+        && make \
+        && make install \
+    ) \
+    && rm -r librdkafka \
+    && rm /tmp/librdkafka.tar.gz \
+    pecl install rdkafka:4.0.3 && \
+    echo "extension=rdkafka.so" > /usr/local/etc/php/conf.d/rdkafka.ini \
+;fi
+
+###########################################################################
 # BZ2:
 ###########################################################################
 
@@ -910,19 +933,6 @@ RUN if [ ${INSTALL_CACHETOOL} = true ]; then \
     mv cachetool.phar /usr/local/bin/cachetool \
 ;fi
 
-###########################################################################
-# 2020年9月7日10:24:29
-# rdkafka:
-###########################################################################
-
-ARG INSTALL_RDKAFKA=true
-
-RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
-    git clone https://github.com/edenhill/librdkafka.git && \
-      cd librdkafka && ./configure && make && make install && \
-    pecl install rdkafka:4.0.3 && \
-    echo "extension=rdkafka.so" > /usr/local/etc/php/conf.d/rdkafka.ini \
-;fi
 
 ###########################################################################
 # Check PHP version:

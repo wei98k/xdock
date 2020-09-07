@@ -56,7 +56,7 @@ services:
 
 ### Workspace Utilities ##################################
     workspace:
-      image: registry.cn-hangzhou.aliyuncs.com/docker-dep/workspace:1.0
+      image: registry.cn-hangzhou.aliyuncs.com/xdock/workspace:7.2-1.0.0
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         - docker-in-docker:/certs/client
@@ -82,7 +82,69 @@ services:
 
 ### PHP-FPM ##############################################
     php-fpm:
-      image: registry.cn-hangzhou.aliyuncs.com/docker-dep/php-fpm:1.0
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/php-fpm:7.2-1.0.0
+      volumes:
+        - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+        - docker-in-docker:/certs/client
+      expose:
+        - "9000"
+      extra_hosts:
+        - "dockerhost:${DOCKER_HOST_IP}"
+      ports:
+        - "9501:9501"
+        - "9502:9502"
+        - "9503:9503"
+        - "9504:9504"
+      environment:
+        - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
+        - DOCKER_HOST=tcp://docker-in-docker:2376
+        - DOCKER_TLS_VERIFY=1
+        - DOCKER_TLS_CERTDIR=/certs
+        - DOCKER_CERT_PATH=/certs/client
+        - FAKETIME=${PHP_FPM_FAKETIME}
+      depends_on:
+        - workspace
+      networks:
+        - backend
+      links:
+        - docker-in-docker
+
+
+### PHP-FPM ##############################################
+    php-fpm72:
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/php-fpm:7.2-1.0.0
+      volumes:
+        - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+        - docker-in-docker:/certs/client
+      expose:
+        - "9000"
+      extra_hosts:
+        - "dockerhost:${DOCKER_HOST_IP}"
+      ports:
+        - "9501:9501"
+        - "9502:9502"
+        - "9503:9503"
+        - "9504:9504"
+      environment:
+        - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
+        - DOCKER_HOST=tcp://docker-in-docker:2376
+        - DOCKER_TLS_VERIFY=1
+        - DOCKER_TLS_CERTDIR=/certs
+        - DOCKER_CERT_PATH=/certs/client
+        - FAKETIME=${PHP_FPM_FAKETIME}
+      depends_on:
+        - workspace
+      networks:
+        - backend
+      links:
+        - docker-in-docker
+
+
+### PHP-FPM ##############################################
+    php-fpm56:
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/php-fpm:5.6-1.0.0
       volumes:
         - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
@@ -177,6 +239,7 @@ services:
 
 ### NGINX Server #########################################
     nginx:
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/nginx:1.15-1.0
       build:
         context: ./nginx
         args:
@@ -264,7 +327,7 @@ services:
 
 ### MySQL ################################################
     mysql:
-      image: registry.cn-hangzhou.aliyuncs.com/docker-dep/mysql:5.7-1.0
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/mysql:5.7-1.0.0
       environment:
         - MYSQL_DATABASE=${MYSQL_DATABASE}
         - MYSQL_USER=${MYSQL_USER}
@@ -419,6 +482,7 @@ services:
 
 ### Redis ################################################
     redis:
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/redis:5.0.6-1.0.0
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data

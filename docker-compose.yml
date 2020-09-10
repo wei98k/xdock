@@ -56,7 +56,7 @@ services:
 
 ### Workspace Utilities ##################################
     workspace:
-      image: registry.cn-shenzhen.aliyuncs.com/xdock/workspace:7.2-1.0.0
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/workspace:7.2-1.0.1
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         - docker-in-docker:/certs/client
@@ -82,7 +82,7 @@ services:
 
 ### PHP-FPM ##############################################
     php-fpm:
-      image: registry.cn-shenzhen.aliyuncs.com/xdock/php-fpm:7.2-1.0.0
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/php-fpm:7.2-1.0.1
       volumes:
         - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
@@ -113,7 +113,7 @@ services:
 
 ### PHP-FPM ##############################################
     php-fpm72:
-      image: registry.cn-shenzhen.aliyuncs.com/xdock/php-fpm:7.2-1.0.0
+      image: registry.cn-shenzhen.aliyuncs.com/xdock/php-fpm:7.2-1.0.1
       volumes:
         - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}

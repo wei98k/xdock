@@ -933,6 +933,25 @@ RUN if [ ${INSTALL_CACHETOOL} = true ]; then \
     mv cachetool.phar /usr/local/bin/cachetool \
 ;fi
 
+###########################################################################
+# node-agent:
+###########################################################################
+
+ARG INSTALL_SWOOLE_TRACKER=true
+
+RUN if [ ${INSTALL_SWOOLE_TRACKER} = true ]; then \
+
+ADD swoole-tracker-install.sh /tmp/
+RUN chmod +x /tmp/swoole-tracker-install.sh && \
+    cd /tmp/ && \
+    ./swoole-tracker-install.sh && \
+    cp /tmp/swoole-tracker/swoole_tracker72.so $(php -r "echo ini_get('extension_dir');")/swoole-tracker.so && \
+    rm -rf /tmp/swoole-tracker && rm /tmp/swoole-tracker-install.sh
+# 添加entrypoint脚本
+RUN printf '#!/bin/sh\n/opt/swoole/script/php/swoole_php /opt/swoole/node-agent/src/node.php &\nphp-fpm $@' > /opt/swoole/entrypoint.sh && \
+    chmod 755 /opt/swoole/entrypoint.sh \
+;fi
+
 
 ###########################################################################
 # Check PHP version:
@@ -977,6 +996,7 @@ ENV LC_ALL ${LOCALE}
 
 WORKDIR /var/www
 
-CMD ["php-fpm"]
+#CMD ["php-fpm"]
+ENTRYPOINT [ "sh", "-x", "/opt/swoole/entrypoint.sh" ]
 
 EXPOSE 9000

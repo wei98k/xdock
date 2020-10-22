@@ -939,8 +939,9 @@ RUN if [ ${INSTALL_CACHETOOL} = true ]; then \
 
 ARG INSTALL_SWOOLE_TRACKER=true
 
+ADD swoole-tracker-install.sh /tmp/
+
 RUN if [ ${INSTALL_SWOOLE_TRACKER} = true ]; then \
-    curl http://resources.swoole-cloud.com/getInstallShell/trial/3.0.1/13148388835 -o /tmp/swoole-tracker-install.sh && \
     chmod +x /tmp/swoole-tracker-install.sh && \
     cd /tmp/ && \
     ./swoole-tracker-install.sh && \

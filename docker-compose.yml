@@ -109,6 +109,8 @@ services:
         - backend
       links:
         - docker-in-docker
+      cap_add:
+        - "SYS_PTRACE"
 
 
 ### PHP-FPM ##############################################

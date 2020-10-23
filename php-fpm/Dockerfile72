@@ -943,7 +943,7 @@ ARG INSTALL_SWOOLE_TRACKER=true
 RUN if [ ${INSTALL_SWOOLE_TRACKER} = true ]; then \
     curl http://resources.swoole-cloud.com/getInstallShell/trial/3.0.3/13148388835 -o /tmp/swoole-tracker-install.sh && \
     chmod +x /tmp/swoole-tracker-install.sh && \
-    cd /tmp/ && \
+    cd /tmp/ && ./swoole-tracker-install.sh && \
     cp /tmp/swoole-tracker/swoole_tracker72.so $(php -r "echo ini_get('extension_dir');")/swoole-tracker.so && \
     rm -rf /tmp/swoole-tracker && \
 # 添加entrypoint脚本

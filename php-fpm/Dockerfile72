@@ -944,7 +944,7 @@ COPY ./swoole-tracker /tmp/
 RUN if [ ${INSTALL_SWOOLE_TRACKER} = true ]; then \
     cd /tmp/ && \
     cp /tmp/swoole-tracker/swoole_tracker72.so $(php -r "echo ini_get('extension_dir');")/swoole-tracker.so && \
-    cp -R /tmp/swoole-tracker/swoole /opt
+    cp -R /tmp/swoole-tracker/swoole /opt && \
     rm -rf /tmp/swoole-tracker && \
 # 添加entrypoint脚本
     printf '#!/bin/sh\n/opt/swoole/script/php/swoole_php /opt/swoole/node-agent/src/node.php &\nphp-fpm $@' > /opt/swoole/entrypoint.sh && \

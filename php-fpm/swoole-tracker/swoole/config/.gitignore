@@ -1,7 +1,0 @@
-/.dir-locals.el
-/.idea/
-/.svn/
-*.log
-*.pid
-*.cache
-/vendor

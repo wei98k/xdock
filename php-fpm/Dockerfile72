@@ -939,14 +939,13 @@ RUN if [ ${INSTALL_CACHETOOL} = true ]; then \
 
 ARG INSTALL_SWOOLE_TRACKER=true
 
-ADD swoole-tracker-install.sh /tmp/
+COPY ./swoole-tracker /tmp/
 
 RUN if [ ${INSTALL_SWOOLE_TRACKER} = true ]; then \
-    chmod +x /tmp/swoole-tracker-install.sh && \
     cd /tmp/ && \
-    ./swoole-tracker-install.sh && \
     cp /tmp/swoole-tracker/swoole_tracker72.so $(php -r "echo ini_get('extension_dir');")/swoole-tracker.so && \
-    rm -rf /tmp/swoole-tracker && rm /tmp/swoole-tracker-install.sh && \
+    cp -R /tmp/swoole-tracker/swoole /opt
+    rm -rf /tmp/swoole-tracker && \
 # 添加entrypoint脚本
     printf '#!/bin/sh\n/opt/swoole/script/php/swoole_php /opt/swoole/node-agent/src/node.php &\nphp-fpm $@' > /opt/swoole/entrypoint.sh && \
     chmod 755 /opt/swoole/entrypoint.sh \

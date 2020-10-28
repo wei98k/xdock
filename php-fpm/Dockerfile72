@@ -952,6 +952,17 @@ RUN if [ ${INSTALL_SWOOLE_TRACKER} = true ]; then \
 ;fi
 
 ###########################################################################
+# swoole-debug-tool:
+# net-tools tcpdump strace gdb zbacktrace lsof perf
+###########################################################################
+ARG INSTALL_SWOOLE_DEBUG=true
+
+RUN if [ ${INSTALL_SWOOLE_DEBUG} = true ]; then \
+    apt install net-tools tcpdump strace gdb lsof linux-source \
+;fi
+
+
+###########################################################################
 # Check PHP version:
 ###########################################################################
 

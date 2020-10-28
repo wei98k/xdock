@@ -958,7 +958,7 @@ RUN if [ ${INSTALL_SWOOLE_TRACKER} = true ]; then \
 ARG INSTALL_SWOOLE_DEBUG=true
 
 RUN if [ ${INSTALL_SWOOLE_DEBUG} = true ]; then \
-    apt install net-tools tcpdump strace gdb lsof linux-source \
+    apt-get update && apt-get -y install net-tools tcpdump strace gdb lsof linux-source \
 ;fi
 
 

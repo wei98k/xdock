@@ -109,7 +109,7 @@ typing==3.7.4.3
 typing_extensions==4.12.1
 tzlocal==2.1
 uberegg==0.1.1
-urllib3==1.26.15
+urllib3==1.26.19
 virtualenv==20.26.3
 w3lib==2.1.1
 websocket==0.2.1

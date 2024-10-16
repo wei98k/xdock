@@ -4,8 +4,9 @@ FROM python:3.9.16-slim-buster AS builder
 WORKDIR /app
 
 # 安装构建依赖
-RUN apk update && \
-    apk add --no-cache gcc musl-dev libffi-dev
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc libffi-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # 复制必要文件并安装依赖
 COPY ./requirements.txt /app/

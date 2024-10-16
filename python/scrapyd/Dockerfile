@@ -1,5 +1,5 @@
 # 第一个阶段：构建阶段
-FROM python:3.9.16-alpine AS builder
+FROM python:3.9.16-slim-buster AS builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY ./requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 第二个阶段：运行时阶段
-FROM python:3.9.16-alpine
+FROM python:3.9.16-slim-buster
 
 WORKDIR /app
 
